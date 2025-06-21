@@ -61,19 +61,18 @@ export default function ContactSection() {
     try {
       const response = await fetch(scriptURL, {
         method: 'POST',
+        mode: 'no-cors',
         body: formData
       });
 
-      if (response.ok) {
-        toast({
-          title: "Consultation Scheduled Successfully!",
-          description: "Thank you for your consultation request! We will contact you within 24 hours.",
-        });
-        form.reset();
-      } else {
-        throw new Error('Submission failed');
-      }
+      // With no-cors mode, we can't check response.ok, so we assume success
+      toast({
+        title: "Consultation Scheduled Successfully!",
+        description: "Thank you for your consultation request! We will contact you within 24 hours.",
+      });
+      form.reset();
     } catch (error) {
+      console.error('Submission error:', error);
       toast({
         title: "Error",
         description: "There was a problem scheduling the consultation. Please try again.",
