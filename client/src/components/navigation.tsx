@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Landmark, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import logoImage from "@assets/logo_1750538889210.png";
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +30,7 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <div className="text-2xl font-bold text-primary flex items-center">
-              <Landmark className="mr-2 h-8 w-8" />
+              <img src={logoImage} alt="Bhoomi Nyay Solutions Logo" className="mr-3 h-10 w-10" />
               Bhoomi Nyay Solutions
             </div>
           </div>
@@ -53,6 +54,12 @@ export default function Navigation() {
                 className="text-gray-700 hover:text-primary px-3 py-2 text-sm font-medium transition-colors"
               >
                 Services
+              </button>
+              <button
+                onClick={() => scrollToSection('faq')}
+                className="text-gray-700 hover:text-primary px-3 py-2 text-sm font-medium transition-colors"
+              >
+                FAQ
               </button>
               <button
                 onClick={() => scrollToSection('contact')}
@@ -92,6 +99,12 @@ export default function Navigation() {
                 className="block text-gray-700 hover:text-primary px-3 py-2 text-base font-medium transition-colors w-full text-left"
               >
                 Services
+              </button>
+              <button
+                onClick={() => scrollToSection('faq')}
+                className="block text-gray-700 hover:text-primary px-3 py-2 text-base font-medium transition-colors w-full text-left"
+              >
+                FAQ
               </button>
               <button
                 onClick={() => scrollToSection('contact')}

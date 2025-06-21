@@ -1,4 +1,5 @@
-import { Landmark, Facebook, Twitter, Linkedin, MessageCircle } from "lucide-react";
+import { Facebook, Twitter, Linkedin, MessageCircle } from "lucide-react";
+import logoImage from "@assets/logo_1750538889210.png";
 
 export default function Footer() {
   const scrollToSection = (sectionId: string) => {
@@ -14,7 +15,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-2">
             <div className="text-2xl font-bold mb-4 flex items-center">
-              <Landmark className="mr-2 h-8 w-8" />
+              <img src={logoImage} alt="Bhoomi Nyay Solutions Logo" className="mr-3 h-10 w-10" />
               Bhoomi Nyay Solutions
             </div>
             <p className="text-gray-300 mb-6 max-w-md">
@@ -62,6 +63,14 @@ export default function Footer() {
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Services
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => scrollToSection('faq')}
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  FAQ
                 </button>
               </li>
               <li>

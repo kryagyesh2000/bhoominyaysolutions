@@ -223,8 +223,8 @@ export default function ContactSection() {
                     <Phone className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Phone Numbers</h4>
-                    <p className="text-gray-600">+91 98765 43210<br />+91 87654 32109</p>
+                    <h4 className="font-semibold text-gray-900 mb-1">Phone Number</h4>
+                    <p className="text-gray-600">+91 7677406032</p>
                   </div>
                 </div>
                 
@@ -234,7 +234,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-1">Email</h4>
-                    <p className="text-gray-600">info@bhoominyaysolutions.com<br />consultation@bhoominyaysolutions.com</p>
+                    <p className="text-gray-600">bhoominyaysolutions@outlook.in</p>
                   </div>
                 </div>
                 
@@ -255,11 +255,11 @@ export default function ContactSection() {
               <h4 className="text-xl font-bold mb-3">Urgent Land Matter?</h4>
               <p className="mb-4 opacity-90">Get immediate expert guidance for time-sensitive land disputes and legal issues.</p>
               <a
-                href="tel:+919876543210"
+                href="tel:+917677406032"
                 className="inline-flex items-center bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
               >
                 <PhoneCall className="mr-2 h-4 w-4" />
-                Call Now: +91 98765 43210
+                Call Now: +91 7677406032
               </a>
             </div>
           </div>
