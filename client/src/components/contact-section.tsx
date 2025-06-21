@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -10,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
 import { 
   MapPin, 
   Phone, 
@@ -26,13 +24,14 @@ const consultationSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   phone: z.string().min(10, "Please enter a valid phone number"),
   service: z.string().min(1, "Please select a service"),
-  message: z.string().min(10, "Please provide at least 10 characters describing your issue"),
+  issue: z.string().min(10, "Please provide at least 10 characters describing your issue"),
 });
 
 type ConsultationForm = z.infer<typeof consultationSchema>;
 
 export default function ContactSection() {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const form = useForm<ConsultationForm>({
     resolver: zodResolver(consultationSchema),
@@ -42,32 +41,47 @@ export default function ContactSection() {
       email: "",
       phone: "",
       service: "",
-      message: "",
+      issue: "",
     },
   });
 
-  const consultationMutation = useMutation({
-    mutationFn: async (data: ConsultationForm) => {
-      return await apiRequest("POST", "/api/consultations", data);
-    },
-    onSuccess: () => {
-      toast({
-        title: "Consultation Request Submitted",
-        description: "Thank you for your consultation request! We will contact you within 24 hours.",
+  const onSubmit = async (data: ConsultationForm) => {
+    setIsSubmitting(true);
+    
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzpA1YXSx0hzoty71amzcVfeBuaR3ltMu2ZI_ueMZ3KEdjvJYn2kdw1iCJt1JHZoBmi/exec';
+    
+    const formData = new FormData();
+    formData.append('firstName', data.firstName);
+    formData.append('lastName', data.lastName);
+    formData.append('email', data.email);
+    formData.append('phone', data.phone);
+    formData.append('service', data.service);
+    formData.append('issue', data.issue);
+
+    try {
+      const response = await fetch(scriptURL, {
+        method: 'POST',
+        body: formData
       });
-      form.reset();
-    },
-    onError: (error) => {
+
+      if (response.ok) {
+        toast({
+          title: "Consultation Scheduled Successfully!",
+          description: "Thank you for your consultation request! We will contact you within 24 hours.",
+        });
+        form.reset();
+      } else {
+        throw new Error('Submission failed');
+      }
+    } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to submit consultation request. Please try again.",
+        description: "There was a problem scheduling the consultation. Please try again.",
         variant: "destructive",
       });
-    },
-  });
-
-  const onSubmit = (data: ConsultationForm) => {
-    consultationMutation.mutate(data);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -159,12 +173,12 @@ export default function ContactSection() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="title-verification">Land Title Verification</SelectItem>
-                            <SelectItem value="dispute-resolution">Dispute Resolution Consulting</SelectItem>
-                            <SelectItem value="mutation-registry">Mutation & Registry Support</SelectItem>
-                            <SelectItem value="legal-notices">Legal Notices & Affidavits</SelectItem>
-                            <SelectItem value="boundary-clarification">Land Map & Boundary Clarification</SelectItem>
-                            <SelectItem value="rti-followup">RTI & File Follow-Up</SelectItem>
+                            <SelectItem value="Land Dispute Resolution">Land Dispute Resolution</SelectItem>
+                            <SelectItem value="Ownership Verification">Ownership Verification</SelectItem>
+                            <SelectItem value="Mutation Assistance">Mutation Assistance</SelectItem>
+                            <SelectItem value="Court Case Support">Court Case Support</SelectItem>
+                            <SelectItem value="Land Title Verification">Land Title Verification</SelectItem>
+                            <SelectItem value="Legal Notices & Affidavits">Legal Notices & Affidavits</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -174,7 +188,7 @@ export default function ContactSection() {
                   
                   <FormField
                     control={form.control}
-                    name="message"
+                    name="issue"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Describe Your Issue *</FormLabel>
@@ -192,11 +206,11 @@ export default function ContactSection() {
                   
                   <Button
                     type="submit"
-                    disabled={consultationMutation.isPending}
+                    disabled={isSubmitting}
                     className="w-full bg-primary text-white py-4 px-6 text-lg font-semibold hover:bg-primary/90 transition-colors shadow-lg"
                   >
                     <Send className="mr-2 h-5 w-5" />
-                    {consultationMutation.isPending ? "Submitting..." : "Schedule Free Consultation"}
+                    {isSubmitting ? "Submitting..." : "Schedule Free Consultation"}
                   </Button>
                 </form>
               </Form>
